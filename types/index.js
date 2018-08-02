@@ -26,5 +26,6 @@ module.exports = gql`
 
   type Mutation {
     uploadFile(file: Upload!): Boolean
+    addBook(filename: String, title: String!, authors: String!): Boolean
   }
 `;

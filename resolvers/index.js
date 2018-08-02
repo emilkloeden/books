@@ -1,5 +1,5 @@
 const mock = require("../mock-data");
-const { storeUpload } = require("../utils");
+const { addBook, storeUpload } = require("../utils");
 
 module.exports = {
   Query: {
@@ -12,6 +12,10 @@ module.exports = {
     uploadFile: async (_, { file }) => {
       const { stream, filename } = await file;
       await storeUpload({ stream, filename });
+      return true;
+    },
+    addBook: async (_, { filename, title, authors }) => {
+      await addBook({ filename, title, authors });
       return true;
     }
   }

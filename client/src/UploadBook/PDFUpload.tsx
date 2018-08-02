@@ -13,7 +13,7 @@ const uploadFileMutation = gql`
   }
 `;
 
-const PDFUpload: React.SFC<IProps> = props => {
+const PDFUpload: React.SFC<IProps> = ({ onDropAccepted }) => {
   return (
     <Mutation mutation={uploadFileMutation}>
       {(mutate: any) => (
@@ -22,7 +22,7 @@ const PDFUpload: React.SFC<IProps> = props => {
           disableClick={true}
           multiple={false}
           // tslint:disable-next-line jsx-no-lambda
-          onDropAccepted={([file]) => mutate({ variables: { file } })}
+          onDropAccepted={files => onDropAccepted(files, mutate)}
           style={{
             borderColor: "rgb(102, 102, 102)",
             borderRadius: "5px",
