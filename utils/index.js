@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const User = require("../db/models/user");
 
 module.exports = {
   storeUpload: ({ stream, filename }) => {
@@ -20,5 +21,8 @@ module.exports = {
       console.log({ filename, title, authors });
       resolve();
     });
+  },
+  createUser: ({ givenName, surname, email, password }) => {
+    return User.create({ givenName, surname, email, password });
   }
 };
