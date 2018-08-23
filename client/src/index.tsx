@@ -1,5 +1,7 @@
 import { InMemoryCache } from "apollo-boost";
 import ApolloClient from "apollo-client";
+import { ApolloLink } from "apollo-link";
+import { setContext } from "apollo-link-context";
 import { createUploadLink } from "apollo-upload-client";
 import * as React from "react";
 import { ApolloProvider } from "react-apollo";
@@ -9,7 +11,20 @@ import App from "./App";
 import "./index.css";
 import registerServiceWorker from "./registerServiceWorker";
 
-const link = createUploadLink({ uri: "http://localhost:4000/graphql" });
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("token");
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ""
+    }
+  };
+});
+
+const uploadLink = createUploadLink({ uri: "http://localhost:4000/graphql" });
+
+const link = ApolloLink.from([authLink, uploadLink]);
+
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link

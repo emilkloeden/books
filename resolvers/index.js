@@ -1,6 +1,5 @@
 const mock = require("../mock-data");
-const { addBook, createUser, storeUpload } = require("../utils");
-const User = require("../db/models/user");
+const { addBook, storeUpload } = require("../utils");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 const saltRounds = 10;
@@ -12,25 +11,27 @@ module.exports = {
       console.log(number);
       return mock[number - 1];
     },
-    me: (_, args, { user, db }) => {
+    me: async (_, __, { user, db }) => {
       if (!user) {
-        console.log(user);
         throw new Error("Unauthorized attempt. Sign in or register.");
       }
-      // return await db.User.findById(user.id)
+
+      return await db.User.findById(user.id);
     },
     user: async (_, { id }, { db }) => {
       return await db.User.findById(id);
     }
   },
   Mutation: {
-    uploadFile: async (_, { file }) => {
+    uploadFile: async (_, { file }, { user }) => {
+      const { email } = user;
       const { stream, filename } = await file;
       await storeUpload({ stream, filename });
       return true;
     },
-    addBook: async (_, { filename, title, authors }) => {
-      await addBook({ filename, title, authors });
+    addBook: async (_, { filename, title, authors }, { user }) => {
+      const { email } = user;
+      await addBook({ filename, title, authors, email });
       return true;
     },
     createUser: async (_, { givenName, surname, email, password }, { db }) => {
@@ -42,7 +43,6 @@ module.exports = {
         password: encryptedPassword
       });
       const plainUser = await user.get({ plain: true });
-      console.log(plainUser);
       return true;
     },
     logUserIn: async (_, { input }, { db }) => {
@@ -55,7 +55,6 @@ module.exports = {
       if (!passwordMatch) {
         throw Error("User not found or username and password don't match2");
       }
-      console.log(userMatch);
       return jsonwebtoken.sign(
         {
           id: userMatch.id,

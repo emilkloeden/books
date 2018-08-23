@@ -28,7 +28,7 @@ const addBookMutation = gql`
   }
 `;
 
-class UploadBook extends React.Component<{}, IState> {
+class BookUploadForm extends React.Component<{}, IState> {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -128,4 +128,4 @@ class UploadBook extends React.Component<{}, IState> {
   }
 }
 
-export default UploadBook;
+export default BookUploadForm;
