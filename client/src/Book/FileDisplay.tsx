@@ -8,11 +8,10 @@ interface IProps {
 const FileDisplay: React.SFC<IProps> = props => {
   const { file } = props;
   return (
-    <React.Fragment>
+    <div>
+      <p>Upload:</p>
       <h3>{file.name}</h3>
-      <span>{file.preview}</span>
-      <img src={file.preview} />
-    </React.Fragment>
+    </div>
   );
 };
 export default FileDisplay;

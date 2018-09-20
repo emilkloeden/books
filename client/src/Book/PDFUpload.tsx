@@ -19,7 +19,7 @@ const PDFUpload: React.SFC<IProps> = ({ onDropAccepted }) => {
       {(mutate: any) => (
         <Dropzone
           accept="application/pdf"
-          disableClick={true}
+          disableClick={false}
           multiple={false}
           // tslint:disable-next-line jsx-no-lambda
           onDropAccepted={files => onDropAccepted(files, mutate)}
@@ -32,10 +32,11 @@ const PDFUpload: React.SFC<IProps> = ({ onDropAccepted }) => {
             lineHeight: "200px",
             margin: "20px",
             position: "relative",
+            textAlign: "center",
             width: "100%"
           }}
         >
-          Drop a PDF file here to begin
+          Drop a PDF file or click here to begin
         </Dropzone>
       )}
     </Mutation>

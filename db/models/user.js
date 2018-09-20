@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  User.associate = function(models) {};
+  User.associate = function(models) {
+    User.hasMany(models.Book);
+    User.hasMany(models.Proof);
+    User.belongsToMany(models.ProofContext, { through: "UserProofContext" });
+  };
   return User;
 };

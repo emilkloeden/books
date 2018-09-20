@@ -75,3 +75,7 @@ typings/
 
 # mine
 book-uploads/*
+*.sqlite
+./db/config.js
+.DS_Store
+.vscode/

@@ -3,6 +3,7 @@ const { ApolloServer } = require("apollo-server-express");
 const bodyParser = require("body-parser");
 const express = require("express");
 const jwt = require("express-jwt");
+const amqp = require("amqplib/callback_api");
 
 const db = require("./db/models");
 const typeDefs = require("./schema");
@@ -37,8 +38,19 @@ server.applyMiddleware({ app });
 const domain = "http://localhost";
 const port = 4000;
 
-db.sequelize.authenticate().then(() => {
+const launchApp = () => {
+  // console.log("hi");
   app.listen({ port }, () => {
     console.log(`🚀  Server ready at ${domain}:${port}${server.graphqlPath}`);
   });
-});
+};
+
+const launchMessaging = () => {};
+
+db.sequelize
+  // .authenticate()
+  .sync({ force: true, logging: console.log })
+  // .then(console.log("hiho"))
+  // .then(launchMessaging)
+  .then(launchApp)
+  .catch(err => console.error(err));

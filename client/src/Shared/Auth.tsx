@@ -1,3 +1,8 @@
+/**
+ * Generic Auth component that will check if a user is logged in,
+ * and if so render this.props.children,
+ * if not it will redirect to /login
+ */
 import * as React from "react";
 import { Redirect } from "react-router-dom";
 import { isLoggedIn } from "../auth";

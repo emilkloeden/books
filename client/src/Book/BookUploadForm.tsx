@@ -11,6 +11,7 @@ import {
   FormGroup,
   Row
 } from "react-bootstrap";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import FileDisplay from "./FileDisplay";
 import IDropZoneFile from "./IDropZoneFile";
@@ -28,8 +29,11 @@ const addBookMutation = gql`
   }
 `;
 
-class BookUploadForm extends React.Component<{}, IState> {
-  constructor(props: {}) {
+class BasicBookUploadForm extends React.Component<
+  RouteComponentProps<any>,
+  IState
+> {
+  constructor(props: RouteComponentProps<any>) {
     super(props);
     this.state = {
       authors: "",
@@ -70,7 +74,10 @@ class BookUploadForm extends React.Component<{}, IState> {
   public render() {
     const { file, title, authors } = this.state;
     return (
-      <Mutation mutation={addBookMutation}>
+      <Mutation
+        mutation={addBookMutation}
+        onCompleted={() => this.props.history.push("/books")}
+      >
         {(mutate: any) => (
           <form
             onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
@@ -127,5 +134,7 @@ class BookUploadForm extends React.Component<{}, IState> {
     );
   }
 }
+
+const BookUploadForm = withRouter(BasicBookUploadForm);
 
 export default BookUploadForm;
